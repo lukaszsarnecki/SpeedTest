@@ -1,34 +1,25 @@
-#!/usr/bin/env python3
-import speedtest
+#!/bin/bash
 
-def main():
-    # Announce the beginning of the internet speed test, inviting the user to observe the flow of digital currents.
-    print("Starting internet speed test...")
-    
-    # Create a Speedtest object – the conductor orchestrating the performance of network evaluation.
-    st = speedtest.Speedtest()
-    
-    # Search for and select the best server based on latency, ensuring the most precise and harmonious connection.
-    print("Finding the best server...")
-    st.get_best_server()
-    
-    # Perform the download test, measuring how swiftly data streams from the digital ether to your device.
-    print("Running download test...")
-    download_speed = st.download()
-    
-    # Perform the upload test, capturing the speed at which your device sends data out into the vast network.
-    print("Running upload test...")
-    upload_speed = st.upload()
-    
-    # Retrieve the ping value, which represents the round-trip time between your device and the chosen server.
-    ping = st.results.ping
+# Sprawdź, czy speedtest-cli jest zainstalowany
+if ! command -v speedtest-cli &> /dev/null; then
+    echo "speedtest-cli nie jest zainstalowany. Zainstaluj go poleceniem:"
+    echo "  pip install speedtest-cli"
+    exit 1
+fi
 
-    # Display the test results in a neatly formatted output, revealing the true speed of your connection.
-    print("\nTest results:")
-    print(f"Ping: {ping:.2f} ms")
-    print(f"Download: {download_speed/1e6:.2f} Mbps")
-    print(f"Upload: {upload_speed/1e6:.2f} Mbps")
+echo "Rozpoczynam test prędkości internetu..."
 
-if __name__ == "__main__":
-    main()
+# Uruchomienie testu i pobranie wyników
+results=$(speedtest-cli --simple)
+
+# Wydobycie wyników: ping, prędkość pobierania oraz wysyłania
+ping=$(echo "$results" | grep "Ping:" | awk '{print $2}')
+download=$(echo "$results" | grep "Download:" | awk '{print $2}')
+upload=$(echo "$results" | grep "Upload:" | awk '{print $2}')
+
+echo ""
+echo "Wyniki testu:"
+echo "Ping: $ping ms"
+echo "Pobieranie: $download Mbps"
+echo "Wysyłanie: $upload Mbps"
 
