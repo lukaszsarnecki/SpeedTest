@@ -1,25 +1,25 @@
 #!/bin/bash
 
-# Sprawdź, czy speedtest-cli jest zainstalowany
+# Check if speedtest-cli is installed
 if ! command -v speedtest-cli &> /dev/null; then
-    echo "speedtest-cli nie jest zainstalowany. Zainstaluj go poleceniem:"
+    echo "speedtest-cli is not installed. Please install it using:"
     echo "  pip install speedtest-cli"
     exit 1
 fi
 
-echo "Rozpoczynam test prędkości internetu..."
+echo "Starting internet speed test..."
 
-# Uruchomienie testu i pobranie wyników
+# Run the test and retrieve the results
 results=$(speedtest-cli --simple)
 
-# Wydobycie wyników: ping, prędkość pobierania oraz wysyłania
+# Extract results: ping, download speed, and upload speed
 ping=$(echo "$results" | grep "Ping:" | awk '{print $2}')
 download=$(echo "$results" | grep "Download:" | awk '{print $2}')
 upload=$(echo "$results" | grep "Upload:" | awk '{print $2}')
 
 echo ""
-echo "Wyniki testu:"
+echo "Test results:"
 echo "Ping: $ping ms"
-echo "Pobieranie: $download Mbps"
-echo "Wysyłanie: $upload Mbps"
+echo "Download: $download Mbps"
+echo "Upload: $upload Mbps"
 
