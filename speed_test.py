@@ -11,6 +11,11 @@ def main():
     # Find and select the best server based on latency.
     print("Finding the best server...")
     st.get_best_server()
+    best_server = st.get_best_server()
+    
+    # Display information about the selected server.
+    # The best_server dictionary includes, among others, the keys: 'sponsor' (provider name), 'name' (server location), and 'country' (country). 
+    print(f"Connected to server: {best_server['sponsor']} ({best_server['name']}, {best_server['country']})")
     
     # Perform the download speed test.
     print("Running download test...")
